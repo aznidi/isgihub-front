@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+      "module": "CommonJS",
+      "target": "ESNext",
+      "isolatedModules": true,
+      "jsx": "react-jsx"
+    }
+  }
+  
