@@ -3,7 +3,7 @@ import RegistrationForm from '../components/Register';
 function RegisterPage() {
   return (
     <>
-       <RegistrationForm/>
+    <center> <RegistrationForm/></center>  
     </>
   )
 }

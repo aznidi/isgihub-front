@@ -27,9 +27,8 @@ const RegisterForm = () => {
         .min(6, "Minimum 6 caractères")
         .required("Mot de passe requis"),
       confirmPassword: Yup.string()
-        .oneOf([Yup.ref("password"), null], "Les mots de passe doivent correspondre")
+        .oneOf([Yup.ref("mot de passe"), null], "Les mots de passe doivent correspondre")
         .required("Confirmation du mot de passe requise"),
-      terms: Yup.boolean().oneOf([true], "Vous devez accepter les termes"),
     }),
     onSubmit: (values) => {
       console.log("Données soumises :", values);
@@ -52,10 +51,11 @@ const RegisterForm = () => {
         {/* Section droite */}
         <div className="lg:w-1/2 w-full p-6 sm:p-8">
           <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">
-            Register
+            
+Inscrivez-vous 
           </h2>
           <p className="text-sm lg:text-base text-gray-600 mb-6">
-            Create your account. It’s free and only takes a minute.
+          Créez votre compte. C'est gratuit et ne prend qu'une minute.
           </p>
           <form onSubmit={formik.handleSubmit}>
             {/* Prénom et Nom */}
@@ -63,8 +63,8 @@ const RegisterForm = () => {
               <div>
                 <input
                   type="text"
-                  name="firstname"
-                  placeholder="Firstname"
+                  name="Nom"
+                  placeholder="Entrez votre nom"
                   className={`border ${
                     formik.touched.firstname && formik.errors.firstname
                       ? "border-red-500"
@@ -83,8 +83,8 @@ const RegisterForm = () => {
               <div>
                 <input
                   type="text"
-                  name="surname"
-                  placeholder="Surname"
+                  name="prénom"
+                  placeholder="Entrez votre prénom"
                   className={`border ${
                     formik.touched.surname && formik.errors.surname
                       ? "border-red-500"
@@ -101,13 +101,13 @@ const RegisterForm = () => {
                 )}
               </div>
             </div>
-
+            
             {/* Email */}
             <div className="mb-4">
               <input
                 type="email"
-                name="email"
-                placeholder="Email"
+                name="Email"
+                placeholder="Entrez votre email"
                 className={`border ${
                   formik.touched.email && formik.errors.email
                     ? "border-red-500"
@@ -127,7 +127,7 @@ const RegisterForm = () => {
               <input
                 type="password"
                 name="password"
-                placeholder="Password"
+                placeholder="Entrez un mot de passe"
                 className={`border ${
                   formik.touched.password && formik.errors.password
                     ? "border-red-500"
@@ -149,7 +149,7 @@ const RegisterForm = () => {
               <input
                 type="password"
                 name="confirmPassword"
-                placeholder="Confirm Password"
+                placeholder="Confirmer le mot de passe"
                 className={`border ${
                   formik.touched.confirmPassword && formik.errors.confirmPassword
                     ? "border-red-500"
@@ -168,35 +168,7 @@ const RegisterForm = () => {
             </div>
 
             {/* Terms */}
-            <div className="mb-4 flex items-center">
-              <input
-                type="checkbox"
-                name="terms"
-                className="mr-2 focus:ring-purple-400"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                checked={formik.values.terms}
-              />
-              <label
-                htmlFor="terms"
-                className="text-sm lg:text-base text-gray-600"
-              >
-                I accept the{" "}
-                <a
-                  href="#"
-                  className="text-purple-600 underline hover:text-purple-800"
-                >
-                  Terms of Use
-                </a>{" "}
-                &{" "}
-                <a
-                  href="#"
-                  className="text-purple-600 underline hover:text-purple-800"
-                >
-                  Privacy Policy
-                </a>
-              </label>
-            </div>
+          
             {formik.touched.terms && formik.errors.terms && (
               <p className="text-red-500 text-xs mt-1">{formik.errors.terms}</p>
             )}
@@ -206,7 +178,8 @@ const RegisterForm = () => {
               type="submit"
               className="w-full bg-purple-600 text-white rounded-lg px-4 py-2 hover:bg-purple-700 transition"
             >
-              Register Now
+              
+Inscrivez-vous 
             </button>
           </form>
         </div>
