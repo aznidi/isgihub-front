@@ -41,10 +41,10 @@ const LoginForm = () => {
         {/* Section droite */}
         <div className="lg:w-1/2 w-full p-6 sm:p-8">
           <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">
-            Login
+            Connectez-Vous
           </h2>
           <p className="text-sm lg:text-base text-gray-600 mb-6">
-            Login to your account.
+            We Miss You ...
           </p>
           <form onSubmit={formik.handleSubmit}>
             {/* Email */}
@@ -57,7 +57,7 @@ const LoginForm = () => {
                   formik.touched.email && formik.errors.email
                     ? "border-red-500"
                     : "border-gray-300"
-                } rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-purple-400`}
+                } rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-purple-400`}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.email}
