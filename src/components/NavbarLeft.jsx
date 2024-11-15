@@ -4,7 +4,7 @@ import logos from '../assets/logos.png'
 const SidebarContext = createContext();
 
 export default function NavbarLeft() {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [activeItem, setActiveItem] = useState(null); // Track active item
 
 
