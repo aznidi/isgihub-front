@@ -3,7 +3,7 @@
 function HomePage() {
   return (
    <center> <div>
-      Hello s7aby o ana ma3arefech
+      Hello s7aby 
     </div></center>
   )
 }
