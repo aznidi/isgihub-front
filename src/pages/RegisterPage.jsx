@@ -4,8 +4,6 @@ function RegisterPage() {
   return (
     <div className='flex justify-center items-center'>
     <RegistrationForm/>
-</div>
-  )
+</div>)
 }
-
-export default RegisterPage
+export default RegisterPage;

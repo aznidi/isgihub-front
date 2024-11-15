@@ -29,24 +29,24 @@ const LoginForm = () => {
       <div className="flex flex-col lg:flex-row w-11/12 max-w-5xl bg-white shadow-lg rounded-lg overflow-hidden">
         {/* Section gauche */}
         <div
-          className="lg:w-1/2 w-full h-60 lg:h-auto bg-cover bg-center"
+          className="lg:w-1/2 w-full min-h-[400px] lg:min-h-full bg-cover bg-center"
           style={{
             backgroundImage: `url('${photo}')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
           }}
         >
-         
         </div>
 
         {/* Section droite */}
         <div className="lg:w-1/2 w-full p-6 sm:p-8">
           <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4">
-            Login
+            Connectez-Vous
           </h2>
           <p className="text-sm lg:text-base text-gray-600 mb-6">
-            Login to your account.
+            We Miss You ...
           </p>
           <form onSubmit={formik.handleSubmit}>
-
             {/* Email */}
             <div className="mb-4">
               <input
@@ -57,7 +57,7 @@ const LoginForm = () => {
                   formik.touched.email && formik.errors.email
                     ? "border-red-500"
                     : "border-gray-300"
-                } rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-purple-400`}
+                } rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-purple-400`}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.email}
@@ -89,6 +89,20 @@ const LoginForm = () => {
               )}
             </div>
 
+            {/* Remember Me & Forgot Password Links (Optional) */}
+            <div className="flex justify-between items-center mb-4">
+              <div>
+                <input
+                  type="checkbox"
+                  name="rememberMe"
+                  className="mr-2"
+                />
+                <label className="text-sm text-gray-600">Remember Me</label>
+              </div>
+              <a href="#" className="text-sm text-purple-600 hover:text-purple-800">
+                Forgot Password?
+              </a>
+            </div>
 
             {/* Submit Button */}
             <button
