@@ -1,13 +1,10 @@
 import React, { useState, createContext } from 'react';
-import { Search, LogIn, LogOut, ChevronFirst, ChevronLast, X } from 'lucide-react';
+import { LogIn, LogOut, ChevronFirst, ChevronLast, Users } from 'lucide-react'; // Import Users icon for Friend Section
 
 const SidebarContext = createContext();
 
 export default function NavbarRight({ isLoggedIn }) {
-  const [expanded, setExpanded] = useState(false); // Start collapsed
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const clearSearch = () => setSearchQuery('');
+  const [expanded, setExpanded] = useState(true); // Start collapsed
 
   // Function to toggle collapse/expand when clicking the collapse button
   const toggleSidebar = () => setExpanded((prev) => !prev);
@@ -48,34 +45,15 @@ export default function NavbarRight({ isLoggedIn }) {
                 )}
               </div>
 
-              {/* Search Section */}
-              <div
-                className="p-3 flex items-center justify-center hover:bg-[#A7F3D0] transition duration-200 ease-in-out cursor-pointer"
-                onClick={() => setExpanded(true)} // Open the sidebar if collapsed
-              >
-                <span className={`text-black ${expanded ? 'mr-3' : ''}`}>
-                  <Search size={20} />
-                </span>
-                {expanded && (
-                  <div className="relative w-full">
-                    <input
-                      type="text"
-                      placeholder="Type something..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full p-2 pl-10 pr-10 rounded-full border border-gray-300 text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#A7F3D0]"
-                    />
-                    {searchQuery && (
-                      <button
-                        onClick={clearSearch}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                      >
-                        <X size={20} />
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
+              {/* Friend Section */}
+              <SidebarItem
+                icon={<Users size={20} />} // Friend icon (Users)
+                text="Friends"
+                expanded={expanded}
+                onClick={() => console.log('Navigating to friends...')} // Replace with actual functionality
+                hoverTextColor="text-gray-700"
+                centerIcon={!expanded}
+              />
 
               {/* Logout Section */}
               <SidebarItem

@@ -22,14 +22,10 @@ const Navbar = () => {
 
   return (
     <div>
-      {/* Button to toggle login state for testing purposes */}
-      <button onClick={toggleLogin} className="fixed top-4 left-4 bg-blue-500 text-white p-2 rounded">
-        {isLoggedIn ? 'Log Out' : 'Log In'}
-      </button>
-
+   
       {isMobile ? (
         <>
-          <NavbarTop />
+          <NavbarTop isLoggedIn={isLoggedIn} />
           <NavbarBottom />
         </>
       ) : (

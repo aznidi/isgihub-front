@@ -1,11 +1,12 @@
 import React, { useState, createContext, useContext } from 'react';
 import { ChevronFirst, ChevronLast, Home, Search, File, Bell, Settings, LogOut } from 'lucide-react';
-
+import logos from '../assets/logos.png'
 const SidebarContext = createContext();
 
 export default function NavbarLeft() {
   const [expanded, setExpanded] = useState(true);
   const [activeItem, setActiveItem] = useState(null); // Track active item
+
 
   // Handle logout action (for now, we'll just log to the console or show an alert)
   const handleLogout = () => {
@@ -25,7 +26,7 @@ export default function NavbarLeft() {
           <div className="p-4 pb-2 flex justify-between items-center">
             {/* Logo that shows/expands when sidebar is expanded */}
             <img
-              src="https://img.logoipsum.com/243.svg"
+              src={logos}
               className={`overflow-hidden transition-all ${expanded ? 'w-32' : 'w-0'}`}
               alt="Logo"
             />
@@ -49,7 +50,7 @@ export default function NavbarLeft() {
             <SidebarItem icon={<Settings />} text="Settings" item="settings" />
           </ul>
 
-          
+        
         </nav>
       </aside>
     </SidebarContext.Provider>
