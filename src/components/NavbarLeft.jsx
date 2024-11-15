@@ -49,18 +49,7 @@ export default function NavbarLeft() {
             <SidebarItem icon={<Settings />} text="Settings" item="settings" />
           </ul>
 
-          {/* Logout Section */}
-          <div className="border-t flex p-3">
-            <button
-              onClick={handleLogout}
-              className="flex items-center text-black hover:text-red-600 transition-colors transform"
-            >
-              <LogOut className="mr-2" size={20} />
-              <span className={`overflow-hidden transition-all ${expanded ? 'w-52 ml-3' : 'w-0'} ${activeItem === 'logout' ? 'animate-jiggle' : ''}`}>
-                Logout
-              </span>
-            </button>
-          </div>
+          
         </nav>
       </aside>
     </SidebarContext.Provider>
