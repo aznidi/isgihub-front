@@ -1,3 +1,4 @@
+// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     darkMode: ["class"],
@@ -49,10 +50,13 @@ module.exports = {
     				'3': 'hsl(var(--chart-3))',
     				'4': 'hsl(var(--chart-4))',
     				'5': 'hsl(var(--chart-5))'
-    			}
+    			},
+                // Ajout des couleurs OFPPT
+                'ofppt-vert': '#00a859', // Couleur verte de l'OFPPT
+                'ofppt-bleu': '#0073b7', // Couleur bleue de l'OFPPT
+                'ofppt-gris': '#808080'  // Couleur grise de l'OFPPT
     		}
     	}
     },
 	plugins: [require("tailwindcss-animate")],
-  }
-  
+}
