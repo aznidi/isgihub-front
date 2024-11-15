@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import NavbarTop from './NavbarTop';
 import NavbarBottom from './NavbarBottom';
 import NavbarLeft from './NavbarLeft';
+import NavbarRight from './NavbarRight';
 
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -26,6 +27,7 @@ const Navbar = () => {
       ) : (
         <>
           <NavbarLeft />
+          <NavbarRight />
         </>
       )}
     </div>
