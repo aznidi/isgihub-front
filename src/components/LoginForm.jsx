@@ -1,5 +1,5 @@
 // src/components/LoginForm.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
@@ -13,6 +13,9 @@ const validationSchema = Yup.object({
 });
 
 const LoginForm = () => {
+
+  const [Submitting, setSubmitting] = useState(true)
+  
   const handleSubmit = (values, { setSubmitting }) => {
     console.log("Submitting", values);
     setSubmitting(false);
@@ -32,7 +35,7 @@ const LoginForm = () => {
               type="email"
               name="email"
               placeholder="Entrez votre email"
-              className="border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 rounded-l p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
           </div>
@@ -43,14 +46,14 @@ const LoginForm = () => {
               type="password"
               name="password"
               placeholder="Entrez votre mot de passe"
-              className="border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 rounded-l p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
           </div>
           
           <button
             type="submit"
-            className="bg-blue-500 text-white font-semibold p-2 rounded-xl w-full mt-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="bg-blue-500 text-white font-semibold p-2 rounded-full w-full mt-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             disabled={isSubmitting}
           >
             {isSubmitting ? 'Connexion...' : 'Se connecter'}
