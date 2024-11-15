@@ -3,7 +3,9 @@ import RegistrationForm from '../components/Register';
 function RegisterPage() {
   return (
     <>
-       <RegistrationForm/>
+       <div className='flex justify-center items-center'>
+          <RegistrationForm/>
+        </div>
     </>
   )
 }

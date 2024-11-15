@@ -29,12 +29,13 @@ const LoginForm = () => {
       <div className="flex flex-col lg:flex-row w-11/12 max-w-5xl bg-white shadow-lg rounded-lg overflow-hidden">
         {/* Section gauche */}
         <div
-          className="lg:w-1/2 w-full h-60 lg:h-auto bg-cover bg-center"
+          className="lg:w-1/2 w-full min-h-[400px] lg:min-h-full bg-cover bg-center"
           style={{
             backgroundImage: `url('${photo}')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
           }}
         >
-         
         </div>
 
         {/* Section droite */}
@@ -46,7 +47,6 @@ const LoginForm = () => {
             Login to your account.
           </p>
           <form onSubmit={formik.handleSubmit}>
-
             {/* Email */}
             <div className="mb-4">
               <input
@@ -89,6 +89,20 @@ const LoginForm = () => {
               )}
             </div>
 
+            {/* Remember Me & Forgot Password Links (Optional) */}
+            <div className="flex justify-between items-center mb-4">
+              <div>
+                <input
+                  type="checkbox"
+                  name="rememberMe"
+                  className="mr-2"
+                />
+                <label className="text-sm text-gray-600">Remember Me</label>
+              </div>
+              <a href="#" className="text-sm text-purple-600 hover:text-purple-800">
+                Forgot Password?
+              </a>
+            </div>
 
             {/* Submit Button */}
             <button
