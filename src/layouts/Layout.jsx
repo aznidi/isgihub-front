@@ -15,12 +15,14 @@ function Layout() {
   }, []);
 
   return (
-    <div className={`${isMobile ? 'flex flex-col h-screen' : 'flex'}`}>
-      <header className={`${isMobile ? 'fixed w-full top-0' : 'fixed h-full w-20'}`}>
+    <div className={`${isMobile ? 'flex flex-col h-screen' : 'flex h-screen'}`}>
+      {/* Barre de navigation */}
+      <header className={`${isMobile ? 'fixed w-full top-0 z-10' : 'fixed h-full w-20 z-10'}`}>
         <Navbar />
       </header>
 
-      <main className={`${isMobile ? 'flex-grow pt-16 pb-16' : 'flex-grow ml-20 mr-20 p-5'}`}>
+      {/* Contenu principal avec marge et padding */}
+      <main className={`flex-grow ${isMobile ? 'pt-20 pb-20 px-4' : 'ml-20 p-8'} bg-white relative`}>
         <Outlet />
       </main>
     </div>

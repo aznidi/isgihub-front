@@ -1,6 +1,6 @@
 function NavbarTop () {
   return (
-    <div className="fixed top-0 w-full bg-ofppt-bleu text-white flex justify-between items-center p-4">
+    <div className="font-sans fixed top-0 w-full bg-ofppt-bleu text-white flex justify-between items-center p-4">
       <div className="text-ofppt-vert text-xl font-bold">Logo</div>
       <input
         type="text"

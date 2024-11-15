@@ -2,7 +2,7 @@ import React from "react";
 
 function NavbarRight () {
   return (
-    <div className="fixed right-0 h-full bg-ofppt-bleu text-white flex flex-col items-center p-4">
+    <div className="font-sans fixed right-0 h-full bg-ofppt-bleu text-white flex flex-col items-center p-4">
       <input
         type="text"
         placeholder="Rechercher"
