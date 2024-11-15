@@ -4,7 +4,7 @@ import { ChevronFirst, ChevronLast, Home, Search, File, Bell, Settings, LogOut }
 const SidebarContext = createContext();
 
 export default function NavbarLeft() {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [activeItem, setActiveItem] = useState(null); // Track active item
 
   // Handle logout action (for now, we'll just log to the console or show an alert)
