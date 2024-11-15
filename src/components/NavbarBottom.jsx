@@ -3,9 +3,9 @@ import { Home, Search, File, Bell, Settings } from 'lucide-react';
 
 function NavbarBottom() {
   const Menus = [
-    { name: "Home", icon: <Home /> },
     { name: "Search", icon: <Search /> },
     { name: "Files", icon: <File /> },
+    { name: "Home", icon: <Home /> },
     { name: "Notifications", icon: <Bell /> },
     { name: "Settings", icon: <Settings /> },
   ];
@@ -26,7 +26,7 @@ function NavbarBottom() {
     <div className="fixed bottom-0 w-full bg-white border-t border-gray-200 rounded-t-xl px-6 font-sans"
       style={{ boxShadow: "0 -8px 15px rgba(0, 0, 0, 0.1)" }} // Shadow at the top of the navbar
     >
-      <ul className="flex relative justify-around p-4">
+      <ul className="flex relative justify-between p-4">
         {/* Circle that highlights the active icon */}
         <span
           className="bg-ofppt-bleu border-4 border-white h-20 w-20 absolute rounded-full flex items-center justify-center transition-all duration-500"
@@ -42,7 +42,11 @@ function NavbarBottom() {
         </span>
 
         {Menus.map((menu, i) => (
-          <li key={i} ref={el => (menuRefs.current[i] = el)} className="w-16">
+          <li
+            key={i}
+            ref={el => (menuRefs.current[i] = el)}
+            className={`w-16 ${i === 2 ? "ml-auto mr-auto" : ""}`} // Center Home in the middle
+          >
             <a
               className={`flex flex-col items-center text-center pt-6 cursor-pointer transition-colors duration-500 ease-in-out ${
                 i === active ? "text-ofppt-bleu" : "text-gray-600 hover:text-ofppt-bleu"
