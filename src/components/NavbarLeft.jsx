@@ -1,12 +1,13 @@
 import React, { useState, createContext, useContext } from 'react';
-import { ChevronFirst, ChevronLast, Home, Search, File, Bell, Settings, LogOut } from 'lucide-react';
-import logos from '../assets/logos.png'
+import { ChevronFirst, ChevronLast, Home, Search, File, Bell, Settings, MessageSquare} from 'lucide-react';
+import { Link } from 'react-router-dom'; // Importer Link pour la navigation
+import logos from '../assets/logos.png';
+
 const SidebarContext = createContext();
 
 export default function NavbarLeft() {
   const [expanded, setExpanded] = useState(false);
   const [activeItem, setActiveItem] = useState(null); // Track active item
-
 
   // Handle logout action (for now, we'll just log to the console or show an alert)
   const handleLogout = () => {
@@ -43,21 +44,21 @@ export default function NavbarLeft() {
 
           {/* Sidebar Items */}
           <ul className="flex-1 px-3">
-            <SidebarItem icon={<Home />} text="Acueil" item="Acueil" />
-            <SidebarItem icon={<Search />} text="Recherche" item="recherche" />
-            <SidebarItem icon={<File />} text="Fichiers" item="files" />
-            <SidebarItem icon={<Bell />} text="Notifications" item="notifications" />
-            <SidebarItem icon={<Settings />} text="Paramètres " item="settings" />
+            <SidebarItem icon={<Home />} text="Acueil" item="home" to="/" />
+            <SidebarItem icon={<Search />} text="Recherche" item="search" to="/search" />
+            <SidebarItem icon={<File />} text="Fichiers" item="files" to="/files" />
+            <SidebarItem icon={<MessageSquare />} text="Messages" item="messages" to="/inbox" />
+            <SidebarItem icon={<Bell />} text="Notifications" item="notifications" to="/notifications" />
+            <SidebarItem icon={<Settings />} text="Paramètres" item="settings" to="/settings" />
           </ul>
 
-        
         </nav>
       </aside>
     </SidebarContext.Provider>
   );
 }
 
-export function SidebarItem({ icon, text, item }) {
+export function SidebarItem({ icon, text, item, to }) {
   const { expanded } = useContext(SidebarContext);
   const [isClicked, setIsClicked] = useState(false);
 
@@ -78,15 +79,14 @@ export function SidebarItem({ icon, text, item }) {
       }`}
       onClick={handleClick} // Handle click to set active state temporarily
     >
-      <span className={`mr-2 transition-transform duration-500 ${isClicked ? 'transform translate-y-1 animate-jiggle' : ''}`}>
-        {icon}
-      </span>
-      <span className={`overflow-hidden transition-all duration-300 ${expanded ? 'w-52 ml-3' : 'w-0'}`}>
-        {text}
-      </span>
+      <Link to={to} className="flex items-center w-full">
+        <span className={`mr-2 transition-transform duration-500 ${isClicked ? 'transform translate-y-1 animate-jiggle' : ''}`}>
+          {icon}
+        </span>
+        <span className={`overflow-hidden transition-all duration-300 ${expanded ? 'w-52 ml-3' : 'w-0'}`}>
+          {text}
+        </span>
+      </Link>
     </li>
   );
 }
-
-
-

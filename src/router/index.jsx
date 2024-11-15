@@ -6,6 +6,9 @@ import NotFoundPage from '../pages/NotFoundPage';
 import Layout from "../layouts/Layout";
 import ProfilePage from "../pages/ProfilePage";
 import SearchPage from "../pages/SearchPage";
+import InboxPage from "../pages/InboxPage";
+import NotifcationsPage from "../pages/NotifcationsPage";
+import FilesPage from "../pages/FilesPage";
 
 export const router = createBrowserRouter(
   [
@@ -29,8 +32,20 @@ export const router = createBrowserRouter(
           element: <ProfilePage />,
         },
         {
+          path: '/inbox',
+          element: <InboxPage />,
+        },
+        {
+          path: '/files',
+          element: <FilesPage />,
+        },
+        {
           path: '/search',
           element: <SearchPage />,
+        },
+        {
+          path: '/notifications',
+          element: <NotifcationsPage />,
         },
         {
           path: '*',

@@ -1,5 +1,6 @@
 import React, { useState, createContext } from 'react';
 import { LogIn, LogOut, ChevronFirst, ChevronLast, Users } from 'lucide-react'; // Import Users icon for Friend Section
+import { Link } from 'react-router-dom'; // Import Link for navigation
 
 const SidebarContext = createContext();
 
@@ -27,33 +28,36 @@ export default function NavbarRight({ isLoggedIn }) {
 
           {isLoggedIn ? (
             <>
-              {/* Profile Section */}
-              <div
-                className="flex items-center p-3 hover:bg-[#A7F3D0] transition duration-200 ease-in-out cursor-pointer"
-                onClick={() => setExpanded(true)} // Ensure sidebar opens if collapsed
-              >
-                <img
-                  src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
-                  alt="Profile"
-                  className="w-10 h-10 rounded-full"
-                />
-                {expanded && (
-                  <div className="ml-3">
-                    <h4 className="font-semibold text-gray-900">John Doe</h4>
-                    <span className="text-sm text-gray-600">johndoe@gmail.com</span>
-                  </div>
-                )}
-              </div>
+              {/* Profile Section - Wrap the profile info with a Link */}
+              <Link to="/profile"> {/* Link to Profile page */}
+                <div
+                  className="flex items-center p-3 hover:bg-[#A7F3D0] transition duration-200 ease-in-out cursor-pointer"
+                  onClick={() => setExpanded(true)} // Ensure sidebar opens if collapsed
+                >
+                  <img
+                    src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full"
+                  />
+                  {expanded && (
+                    <div className="ml-3">
+                      <h4 className="font-semibold text-gray-900">John Doe</h4>
+                      <span className="text-sm text-gray-600">johndoe@gmail.com</span>
+                    </div>
+                  )}
+                </div>
+              </Link>
 
               {/* Friend Section */}
-              <SidebarItem
-                icon={<Users size={20} />} // Friend icon (Users)
-                text="Friends"
-                expanded={expanded}
-                onClick={() => console.log('Navigating to friends...')} // Replace with actual functionality
-                hoverTextColor="text-gray-700"
-                centerIcon={!expanded}
-              />
+              <Link to="/friends"> {/* Link to Friends page */}
+                <SidebarItem
+                  icon={<Users size={20} />} // Friend icon (Users)
+                  text="Friends"
+                  expanded={expanded}
+                  hoverTextColor="text-gray-700"
+                  centerIcon={!expanded}
+                />
+              </Link>
 
               {/* Logout Section */}
               <SidebarItem
@@ -67,14 +71,15 @@ export default function NavbarRight({ isLoggedIn }) {
             </>
           ) : (
             // Show login button when not logged in
-            <SidebarItem
-              icon={<LogIn size={20} />}
-              text="Login"
-              expanded={expanded}
-              onClick={() => console.log('Logging in...')} // Replace with actual login functionality
-              hoverTextColor="text-gray-700"
-              centerIcon={!expanded}
-            />
+            <Link to="/login"> {/* Link to Login page */}
+              <SidebarItem
+                icon={<LogIn size={20} />}
+                text="Login"
+                expanded={expanded}
+                hoverTextColor="text-gray-700"
+                centerIcon={!expanded}
+              />
+            </Link>
           )}
         </nav>
       </aside>
@@ -93,4 +98,3 @@ function SidebarItem({ icon, text, expanded, onClick, hoverTextColor = 'text-gra
     </div>
   );
 }
-

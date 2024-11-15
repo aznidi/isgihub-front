@@ -22,3 +22,22 @@ body {
 }
 
 
+/* Barre de défilement personnalisée */
+::-webkit-scrollbar {
+  width: 8px; /* Largeur de la scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-200; /* Couleur de fond de la piste de défilement */
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-500 rounded-md; /* Couleur de la "thumb" et coins arrondis */
+  transition: background-color 0.2s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-700; /* Couleur au survol */
+}
+
+

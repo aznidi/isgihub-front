@@ -22,9 +22,10 @@ function Layout() {
       </header>
 
       {/* Contenu principal avec marge et padding */}
-      <main className={`flex-grow ${isMobile ? 'pt-20 pb-20 px-4' : 'ml-20 p-8'} bg-white relative`}>
+      <main className={`flex-grow custom-scrollbar ${isMobile ? 'pt-20 pb-20 px-4' : 'ml-20 p-8'} bg-white relative overflow-y-scroll`}>
         <Outlet />
       </main>
+
     </div>
   );
 }
