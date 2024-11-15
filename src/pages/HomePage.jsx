@@ -2,9 +2,9 @@
 
 function HomePage() {
   return (
-    <div>
-      Hello
-    </div>
+   <center> <div>
+      Hello s7aby o ana ma3arefech
+    </div></center>
   )
 }
 
