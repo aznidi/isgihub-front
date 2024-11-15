@@ -1,11 +1,10 @@
 import React from "react"
-
+import Post from "../components/Post";
+import photo from "../assets/photo.jpg";
 function HomePage() {
-  return (
-   <center> <div>
-      Hello s7aby 
-    </div></center>
-  )
-}
 
+  return (
+      <Post/>
+  );
+}
 export default HomePage

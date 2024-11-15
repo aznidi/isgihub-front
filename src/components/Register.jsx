@@ -38,7 +38,7 @@ const RegisterForm = () => {
   });
 
   return (
-    <div className="flex flex-col lg:flex-row w-11/12 max-w-5xl bg-white shadow-lg rounded-lg overflow-hidden">
+    <div className="flex flex-col lg:flex-row w-11/12 max-w-5xl bg-white  py-5 shadow rounded-lg overflow-hidden">
       {/* Section gauche */}
       <div
         className="lg:w-1/2 w-full h-60 lg:h-auto bg-cover bg-center"
