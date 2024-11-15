@@ -6,6 +6,7 @@ import NavbarRight from './NavbarRight';
 
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const isLoggedIn = true;
 
   useEffect(() => {
     const handleResize = () => {
