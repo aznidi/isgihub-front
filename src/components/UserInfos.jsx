@@ -1,4 +1,5 @@
-import React from 'react'
+// src/components/UserInfos.jsx
+import React from 'react';
 import { motion } from "framer-motion";
 import profilePhoto from '../assets/photo.jpg'; // Placeholder image
 
@@ -12,57 +13,52 @@ function UserInfos() {
         groupe: "Groupe A",
         etablissement: "Université de Paris",
         anneeFormation: "3ème année",
-      };
+    };
 
     return (
-        <motion.div
-            className="bg-white p-4 rounded-lg shadow-lg w-full max-w-5xl flex flex-col md:flex-row items-center"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-        >
-            {/* Profile Picture */}
+        <div className="bg-white shadow-lg rounded-lg p-6 w-96">
+            {/* Profile Photo with Hover Animation */}
             <motion.div
-            className="mb-4 md:mb-0 md:mr-6"
-            whileHover={{ scale: 1.1 }}
+                className="flex justify-center mb-4"
+                whileHover={{ scale: 1.1, rotate: 10 }}
+                transition={{ type: "spring", stiffness: 200 }}
             >
-            <img
-                src={profilePhoto}
-                alt="Profile"
-                className="w-24 h-24 rounded-full border-4 border-purple-500 shadow-md"
-            />
+                <img
+                    src={profilePhoto}
+                    alt="Profile"
+                    className="w-32 h-32 rounded-full border-4 border-blue-500"
+                />
             </motion.div>
 
-            {/* Profile Information in Horizontal Layout */}
-            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
-            <motion.div className="flex items-center" whileHover={{ scale: 1.02 }}>
-                <span className="font-medium text-gray-600 mr-2">Name:</span>
-                <span className="text-gray-800">{`${userData.firstName} ${userData.lastName}`}</span>
+            {/* User Name with Hover Effect */}
+            <motion.div
+                className="text-center mb-4"
+                whileHover={{ scale: 1.1, color: "#0077ff" }}
+                transition={{ duration: 0.3 }}
+            >
+                <h2 className="text-xl font-semibold">
+                    {userData.firstName} {userData.lastName}
+                </h2>
             </motion.div>
-            <motion.div className="flex items-center" whileHover={{ scale: 1.02 }}>
-                <span className="font-medium text-gray-600 mr-2">Email:</span>
-                <span className="text-gray-800">{userData.email}</span>
+
+            {/* Email with Hover Effect */}
+            <motion.div
+                className="text-center mb-4"
+                whileHover={{ scale: 1.1, color: "#0077ff" }}
+                transition={{ duration: 0.3 }}
+            >
+                <p className="text-sm">{userData.email}</p>
             </motion.div>
-            <motion.div className="flex items-center" whileHover={{ scale: 1.02 }}>
-                <span className="font-medium text-gray-600 mr-2">Filière:</span>
-                <span className="text-gray-800">{userData.filiere}</span>
-            </motion.div>
-            <motion.div className="flex items-center" whileHover={{ scale: 1.02 }}>
-                <span className="font-medium text-gray-600 mr-2">Groupe:</span>
-                <span className="text-gray-800">{userData.groupe}</span>
-            </motion.div>
-            <motion.div className="flex items-center" whileHover={{ scale: 1.02 }}>
-                <span className="font-medium text-gray-600 mr-2">Établissement:</span>
-                <span className="text-gray-800">{userData.etablissement}</span>
-            </motion.div>
-            <motion.div className="flex items-center" whileHover={{ scale: 1.02 }}>
-                <span className="font-medium text-gray-600 mr-2">Année:</span>
-                <span className="text-gray-800">{userData.anneeFormation}</span>
-            </motion.div>
+
+            {/* Additional User Data */}
+            <div className="space-y-2">
+                <p><strong>Filière:</strong> {userData.filiere}</p>
+                <p><strong>Groupe:</strong> {userData.groupe}</p>
+                <p><strong>Établissement:</strong> {userData.etablissement}</p>
+                <p><strong>Année de Formation:</strong> {userData.anneeFormation}</p>
             </div>
-            
-        </motion.div>
-    )
+        </div>
+    );
 }
 
-export default UserInfos
+export default UserInfos;  {/* Assurez-vous que l'exportation par défaut est ici. */}

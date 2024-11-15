@@ -1,9 +1,9 @@
 // src/pages/ProfilePage.jsx
 import React from "react";
-import UserInfos from "./UserInfos";
+import UserInfos from "../components/UserInfos";
 
 
-const ProfilePage = () => {
+const Profile = () => {
 
   return (
     
@@ -14,4 +14,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default Profile;
