@@ -32,7 +32,7 @@ const LoginForm = () => {
               type="email"
               name="email"
               placeholder="Entrez votre email"
-              className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
           </div>
@@ -43,18 +43,20 @@ const LoginForm = () => {
               type="password"
               name="password"
               placeholder="Entrez votre mot de passe"
-              className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
           </div>
           
           <button
             type="submit"
-            className="bg-blue-500 text-white font-semibold p-2 rounded-lg w-full mt-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="bg-blue-500 text-white font-semibold p-2 rounded-xl w-full mt-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             disabled={isSubmitting}
           >
             {isSubmitting ? 'Connexion...' : 'Se connecter'}
           </button>
+
+          
         </Form>
       )}
     </Formik>
