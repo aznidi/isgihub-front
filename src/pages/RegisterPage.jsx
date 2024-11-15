@@ -2,9 +2,9 @@ import React from 'react';
 import RegistrationForm from '../components/Register';
 function RegisterPage() {
   return (
-    <>
-    <center> <RegistrationForm/></center>  
-    </>
+    <div className='flex justify-center items-center'>
+    <RegistrationForm/>
+</div>
   )
 }
 
