@@ -22,16 +22,16 @@ const Navbar = () => {
 
   return (
     <div>
-   
+
       {isMobile ? (
         <>
-          <NavbarTop isLoggedIn={isLoggedIn} />
+          <NavbarTop isLoggedIn={isLoggedIn}/>
           <NavbarBottom />
         </>
       ) : (
         <>
           <NavbarLeft />
-          {/* Pass the `isLoggedIn` state to `NavbarRight` */}
+          {/* Pass the isLoggedIn state to NavbarRight */}
           <NavbarRight isLoggedIn={isLoggedIn} />
         </>
       )}

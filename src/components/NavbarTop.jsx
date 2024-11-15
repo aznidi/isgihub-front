@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Search, X, LogOut, LogIn, Users } from 'lucide-react';
+import { X, LogOut, LogIn, Users } from 'lucide-react';
 import logos from '../assets/logos.png'; // Ensure this path is correct
 
 function NavbarTop({ isLoggedIn, expanded }) {
@@ -21,7 +20,7 @@ function NavbarTop({ isLoggedIn, expanded }) {
         />
       </div>
 
-    
+      
 
       {/* Profile Section */}
       <div className="relative flex-shrink-0 flex items-center"> {/* Center profile vertically */}
