@@ -49,22 +49,17 @@ export default function NavbarLeft() {
             <SidebarItem icon={<Settings />} text="Settings" item="settings" />
           </ul>
 
-          {/* Profile Section */}
+          {/* Logout Section */}
           <div className="border-t flex p-3">
-            <img
-              src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
-              alt="Profile Avatar"
-              className="w-10 h-10 rounded-md"
-            />
-            <div
-              className={`flex justify-between items-center overflow-hidden transition-all ${expanded ? 'w-52 ml-3' : 'w-0'}`}
+            <button
+              onClick={handleLogout}
+              className="flex items-center text-black hover:text-red-600 transition-colors transform"
             >
-              <div className="leading-4">
-                <h4 className="font-semibold">John Doe</h4>
-                <span className="text-xs text-gray-600">johndoe@gmail.com</span>
-              </div>
-              <MoreVertical size={20} />
-            </div>
+              <LogOut className="mr-2" size={20} />
+              <span className={`overflow-hidden transition-all ${expanded ? 'w-52 ml-3' : 'w-0'} ${activeItem === 'logout' ? 'animate-jiggle' : ''}`}>
+                Logout
+              </span>
+            </button>
           </div>
         </nav>
       </aside>
