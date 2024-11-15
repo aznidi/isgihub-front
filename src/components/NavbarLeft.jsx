@@ -42,11 +42,11 @@ export default function NavbarLeft() {
 
           {/* Sidebar Items */}
           <ul className="flex-1 px-3">
-            <SidebarItem icon={<Home />} text="Home" item="home" />
-            <SidebarItem icon={<Search />} text="Search" item="search" />
-            <SidebarItem icon={<File />} text="Files" item="files" />
+            <SidebarItem icon={<Home />} text="Acueil" item="Acueil" />
+            <SidebarItem icon={<Search />} text="Recherche" item="recherche" />
+            <SidebarItem icon={<File />} text="Fichiers" item="files" />
             <SidebarItem icon={<Bell />} text="Notifications" item="notifications" />
-            <SidebarItem icon={<Settings />} text="Settings" item="settings" />
+            <SidebarItem icon={<Settings />} text="Paramètres " item="settings" />
           </ul>
 
           
