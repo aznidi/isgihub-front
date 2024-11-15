@@ -5,6 +5,7 @@ import RegisterPage from '../pages/RegisterPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import Layout from "../layouts/Layout";
 import ProfilePage from "../pages/ProfilePage";
+import SearchPage from "../pages/SearchPage";
 
 export const router = createBrowserRouter(
   [
@@ -26,6 +27,10 @@ export const router = createBrowserRouter(
         {
           path: '/profile',
           element: <ProfilePage />,
+        },
+        {
+          path: '/search',
+          element: <SearchPage />,
         },
         {
           path: '*',
