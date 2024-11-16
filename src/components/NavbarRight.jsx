@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'; // Import Link for navigation
 const SidebarContext = createContext();
 
 export default function NavbarRight({ isLoggedIn }) {
-  const [expanded, setExpanded] = useState(true); // Start collapsed
+  const [expanded, setExpanded] = useState(false); // Start collapsed
 
   // Function to toggle collapse/expand when clicking the collapse button
   const toggleSidebar = () => setExpanded((prev) => !prev);
