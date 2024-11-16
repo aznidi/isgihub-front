@@ -1,6 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Smile, Send, Sun, Moon } from "lucide-react";
+import { ChevronLeft, ChevronRight, Smile, Send } from "lucide-react";
 import EmojiPicker from "emoji-picker-react";
+
+// Mock user profile pictures
+const mockProfilePics = {
+  Kailey: "https://randomuser.me/api/portraits/lego/1.jpg",
+  MaryJane: "https://randomuser.me/api/portraits/lego/2.jpg",
+  Niko: "https://randomuser.me/api/portraits/lego/3.jpg",
+};
 
 const initialChats = [
   { id: 1, sender: "Kailey", subject: "Say Hi here...", unreadCount: 2, messages: [] },
@@ -9,7 +16,6 @@ const initialChats = [
 ];
 
 export default function ChatApp() {
-  const [darkMode, setDarkMode] = useState(true);
   const [chats, setChats] = useState(initialChats);
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [newMessage, setNewMessage] = useState("");
@@ -99,45 +105,32 @@ export default function ChatApp() {
   };
 
   return (
-    <div
-      className={`h-[90vh] flex ${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"} max-w-[1000px] mx-auto rounded-xl overflow-hidden`}
-    >
+    <div className="h-[90vh] flex bg-gradient-to-r from-[#1e1e1e] via-[#121212] to-[#2a2a2a] text-gray-200 max-w-[1000px] mx-auto rounded-xl overflow-hidden">
       {/* Sidebar */}
       <div
-        className={`transition-all duration-300 ${sidebarOpen ? "w-64" : "w-0"} flex-shrink-0 overflow-hidden ${darkMode ? "bg-gray-800" : "bg-gray-200"} rounded-l-xl`}
+        className={`transition-all duration-300 ${sidebarOpen ? "w-64" : "w-0"} flex-shrink-0 overflow-hidden bg-[#1c1c1c] rounded-l-xl`}
       >
         {sidebarOpen && (
           <div className="p-4">
             <h2 className="text-sm font-bold mb-4 flex items-center justify-between">
               Chats
-              <label className="toggle-switch">
-                <input
-                  type="checkbox"
-                  checked={darkMode}
-                  onChange={() => setDarkMode((prev) => !prev)}
-                />
-                <span className="slider">
-                  <span className="icon">
-                    {darkMode ? <Moon size={16} /> : <Sun size={16} />}
-                  </span>
-                </span>
-              </label>
             </h2>
             <ul>
               {chats.map((chat) => (
                 <li
                   key={chat.id}
-                  className={`p-2 rounded-md mb-2 cursor-pointer ${
-                    selectedMessage?.id === chat.id
-                      ? "bg-indigo-500 text-white"
-                      : "hover:bg-gray-700"
-                  }`}
+                  className={`p-2 rounded-md mb-2 cursor-pointer ${selectedMessage?.id === chat.id ? "bg-[#7f00ff] text-white" : "hover:bg-[#444444]"}`}
                   onClick={() => handleConversationClick(chat)}
                 >
-                  <div className="flex justify-between items-center">
+                  <div className="flex items-center justify-between">
+                    <img
+                      src={mockProfilePics[chat.sender]}
+                      alt={`${chat.sender} profile`}
+                      className="w-8 h-8 rounded-full mr-2"
+                    />
                     <span>{chat.sender}</span>
                     {chat.unreadCount > 0 && (
-                      <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                      <span className="bg-[#ff2e2e] text-white text-xs px-2 py-0.5 rounded-full">
                         {chat.unreadCount}
                       </span>
                     )}
@@ -152,23 +145,19 @@ export default function ChatApp() {
       {/* Chat Window */}
       <div className="flex-1 flex flex-col rounded-r-xl overflow-hidden">
         {/* Header */}
-        <div
-          className={`p-4 flex items-center justify-between ${darkMode ? "bg-gray-800" : "bg-gray-200"} rounded-t-xl`}
-        >
-          <h2 className="font-bold">
-            {selectedMessage ? selectedMessage.sender : "Select a chat"}
-          </h2>
+        <div className="p-4 flex items-center justify-between bg-[#2b2b2b] rounded-t-xl">
+          <h2 className="font-bold">{selectedMessage ? selectedMessage.sender : "Select a chat"}</h2>
           <button
             onClick={() => setSidebarOpen((prev) => !prev)}
-            className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center"
+            className="p-2 rounded-full bg-[#333333] hover:bg-[#444444] flex items-center justify-center"
             style={{ width: "40px", height: "40px" }}
           >
-            {sidebarOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+            {sidebarOpen ? <ChevronLeft size={20} className="text-[#00ff96]" /> : <ChevronRight size={20} className="text-[#00ff96]" />}
           </button>
         </div>
 
         {/* Messages */}
-        <div className={`flex-1 p-4 ${darkMode ? "bg-gray-900" : "bg-white"} overflow-y-scroll`}>
+        <div className="flex-1 p-4 bg-[#1e1e1e] overflow-y-scroll">
           {selectedMessage ? (
             selectedMessage.messages.map((msg, index) => (
               <div
@@ -176,19 +165,14 @@ export default function ChatApp() {
                 className={`mb-3 flex ${msg.sender === "You" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`relative max-w-[70%] p-3 rounded-lg ${
-                    msg.sender === "You"
-                      ? "bg-indigo-500 text-white"
-                      : "bg-gray-300 text-gray-900"
-                  }`}
+                  className={`relative max-w-[70%] p-3 rounded-lg ${msg.sender === "You" ? "bg-[#007BFF] text-white" : "bg-[#eeeeee] text-black"}`}
                   style={{
                     borderRadius: "20px", // Rounded bubbles
                     padding: "12px", // Clean padding
                   }}
                 >
                   <p className="text-sm">{msg.message}</p>
-                  <p className="text-xs text-gray-500 text-right mt-1">{msg.timestamp}</p>
-
+                  <p className="text-xs text-black text-right mt-1">{msg.timestamp}</p> {/* Updated to black */}
                   {/* Tail for the message bubble (side) */}
                   {msg.sender === "You" ? (
                     <div
@@ -198,7 +182,7 @@ export default function ChatApp() {
                         height: "0",
                         borderTop: "8px solid transparent",
                         borderBottom: "8px solid transparent",
-                        borderLeft: "8px solid #4f46e5", // Tail color for sent message (Indigo)
+                        borderLeft: "8px solid #007BFF", // Tail color for sent message
                         borderRadius: "10px", // Rounded corner for the tail
                       }}
                     />
@@ -210,7 +194,7 @@ export default function ChatApp() {
                         height: "0",
                         borderTop: "8px solid transparent",
                         borderBottom: "8px solid transparent",
-                        borderRight: "8px solid #d1d5db", // Tail color for received message (Light gray)
+                        borderRight: "8px solid #eeeeee", // Tail color for received message
                         borderRadius: "10px", // Rounded corner for the tail
                       }}
                     />
@@ -224,12 +208,12 @@ export default function ChatApp() {
         </div>
 
         {/* Input */}
-        <div className={`p-4 flex items-center ${darkMode ? "bg-gray-800" : "bg-gray-200"}`} ref={inputRef}>
+        <div className="p-4 flex items-center bg-[#333333]" ref={inputRef}>
           <button
             onClick={() => setShowEmojiPicker((prev) => !prev)}
-            className="mr-2 p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600"
+            className="mr-2 p-2 rounded-full bg-[#444444] text-gray-300"
           >
-            <Smile size={20} className={`${darkMode ? "text-gray-300" : "text-gray-600"}`} />
+            <Smile size={20} />
           </button>
 
           {showEmojiPicker && (
@@ -240,7 +224,7 @@ export default function ChatApp() {
                 height: "350px",
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
                 borderRadius: "12px",
-                backgroundColor: darkMode ? "#333" : "#f9f9f9",
+                backgroundColor: "#333333",
                 padding: "10px",
               }}
             >
@@ -258,7 +242,7 @@ export default function ChatApp() {
           />
           <button
             onClick={handleSendMessage}
-            className="ml-2 p-2 rounded-full bg-indigo-500 hover:bg-indigo-600 text-white"
+            className="ml-2 p-2 rounded-full bg-[#007BFF] hover:bg-[#0056b3] text-white"
           >
             <Send size={20} />
           </button>
