@@ -5,7 +5,7 @@ import logos from '../assets/logos.png';
 
 const SidebarContext = createContext();
 
-export default function NavbarLeft() {
+export default function NavbarLeft({ isLoggedIn }) {
   const [expanded, setExpanded] = useState(true); // Start expanded for easier UX
   const [activeItem, setActiveItem] = useState(null); // Track active item
 
@@ -33,6 +33,7 @@ export default function NavbarLeft() {
           </div>
 
           {/* Border under the collapse button */}
+          
           <div className="border-b border-gray-200" />
 
           {/* Sidebar Items */}

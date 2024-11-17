@@ -7,7 +7,7 @@ import NavbarRight from './NavbarRight';
 
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Track the logged-in state
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track the logged-in state
 
   useEffect(() => {
     const handleResize = () => {
@@ -27,11 +27,11 @@ const Navbar = () => {
       {isMobile ? (
         <>
           <NavbarTop isLoggedIn={isLoggedIn}/>
-          <NavbarBottom />
+          <NavbarBottom isLoggedIn={isLoggedIn}/>
         </>
       ) : (
         <>
-          <NavbarLeft />
+          <NavbarLeft isLoggedIn={isLoggedIn}/>
           {/* Pass the isLoggedIn state to NavbarRight */}
           <NavbarRight isLoggedIn={isLoggedIn} />
         </>

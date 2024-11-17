@@ -2,9 +2,18 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import photo from "../assets/photo.jpg";
+import { Link, useNavigate } from "react-router-dom"; // Importer useNavigate
+import { ToastContainer, toast } from "react-toastify";
+import { useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase-config"; // Assurez-vous que Firebase est configuré
+import { TailSpin } from "react-loader-spinner";
 
 const RegisterForm = () => {
-  // Configuration de Formik
+  const navigate = useNavigate(); // Initialiser useNavigate
+  const [isLoading, setIsLoading] = useState(false); // État pour gérer le spinner
+
   const formik = useFormik({
     initialValues: {
       firstname: "",
@@ -12,7 +21,6 @@ const RegisterForm = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      terms: false,
     },
     validationSchema: Yup.object({
       firstname: Yup.string()
@@ -31,14 +39,69 @@ const RegisterForm = () => {
         .oneOf([Yup.ref("password"), null], "Les mots de passe doivent correspondre")
         .required("Confirmation du mot de passe requise"),
     }),
-    onSubmit: (values) => {
-      console.log("Données soumises :", values);
-      alert("Formulaire soumis avec succès !");
+    onSubmit: async (values) => {
+      try {
+        // Inscription via Firebase
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          values.email,
+          values.password
+        );
+
+        // Affiche une notification de succès
+        toast.success("Inscription réussie !", {
+          position: "top-right",
+          autoClose: 2000, // Ferme automatiquement après 2 secondes
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
+
+        setIsLoading(false); // Désactiver le spinner
+
+          // Redirection vers /login après un délai
+          setTimeout(() => {
+            navigate("/login"); // Redirige vers la page de connexion
+          }, 2000); // Délai pour permettre d'afficher la Toast
+        } catch (error) {
+        setIsLoading(false); // Désactiver le spinner en cas d'erreur
+        // Gérer les erreurs Firebase
+        if (error.code === "auth/email-already-in-use") {
+          toast.error("L'adresse e-mail est déjà utilisée.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+          });
+        } else if (error.code === "auth/weak-password") {
+          toast.error("Le mot de passe est trop faible.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+          });
+        } else if (error.code === "auth/invalid-email") {
+          toast.error("L'adresse e-mail est invalide.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+          });
+        } else {
+          toast.error("Une erreur est survenue.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+          });
+        }
+
+        console.error("Erreur Firebase :", error.message);
+      }
     },
   });
 
   return (
-    <div className="flex flex-col lg:flex-row w-11/12 max-w-5xl bg-white  py-5 shadow rounded-lg overflow-hidden">
+    <div className="flex flex-col lg:flex-row w-11/12 max-w-5xl bg-white py-5 shadow rounded-lg overflow-hidden">
       {/* Section gauche */}
       <div
         className="lg:w-1/2 w-full h-60 lg:h-auto bg-cover bg-center"
@@ -166,14 +229,34 @@ const RegisterForm = () => {
           </div>
 
           {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-purple-600 text-white rounded-lg px-4 py-2 hover:bg-purple-700 transition"
-          >
-            Inscrivez-vous
-          </button>
+        <button
+          type="submit"
+          className={`w-full bg-purple-600 text-white rounded-md px-4 py-2 hover:bg-purple-700 transition flex items-center justify-center ${
+            isLoading ? "opacity-70 cursor-not-allowed" : ""
+          }`}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <TailSpin
+              height="24"
+              width="24"
+              color="#FFFFFF"
+              ariaLabel="loading"
+            />
+          ) : (
+            "Inscrivez-vous"
+          )}
+        </button>
         </form>
+        <div className="px-2 py-2 text-sm text-purple-600 hover:text-purple-800">
+          <Link to={"/login"}>
+            Vous avez déjà un compte ? Connectez-vous
+          </Link>
+        </div>
       </div>
+
+      {/* Toast Notifications */}
+      <ToastContainer />
     </div>
   );
 };
