@@ -9,6 +9,7 @@ import SearchPage from "../pages/SearchPage";
 import InboxPage from "../pages/InboxPage";
 import NotifcationsPage from "../pages/NotifcationsPage";
 import FilesPage from "../pages/FilesPage";
+import SettingsPage from "../pages/SettingsPage";
 
 export const router = createBrowserRouter(
   [
@@ -38,6 +39,10 @@ export const router = createBrowserRouter(
         {
           path: '/files',
           element: <FilesPage />,
+        },
+        {
+          path: '/settings',
+          element: <SettingsPage />,
         },
         {
           path: '/search',
