@@ -7,7 +7,7 @@ import NavbarRight from './NavbarRight';
 
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track the logged-in state
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Track the logged-in state
 
   useEffect(() => {
     const handleResize = () => {
