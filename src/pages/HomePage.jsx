@@ -26,31 +26,6 @@ function HomePage() {
       name: "Salsabil",
       profileImage: "/images/salsabil.jpg",
       mutualFriends: 8,
-    },    {
-      id: 4,
-      name: "Salsabil",
-      profileImage: "/images/salsabil.jpg",
-      mutualFriends: 8,
-    },    {
-      id: 6,
-      name: "Salsabil",
-      profileImage: "/images/salsabil.jpg",
-      mutualFriends: 8,
-    },    {
-      id: 5,
-      name: "Salsabil",
-      profileImage: "/images/salsabil.jpg",
-      mutualFriends: 8,
-    },    {
-      id: 7,
-      name: "Salsabil",
-      profileImage: "/images/salsabil.jpg",
-      mutualFriends: 8,
-    },    {
-      id: 8,
-      name: "Salsabil",
-      profileImage: "/images/salsabil.jpg",
-      mutualFriends: 8,
     },
   ];
 
@@ -96,8 +71,18 @@ function HomePage() {
       >
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white p-3 md:p-4 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110"
+          className="relative flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white p-3 md:p-4 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110"
         >
+          {/* Texte à gauche de l'icône, visible uniquement sur desktop et seulement quand showForm est faux */}
+          {!showForm && (
+            <span
+              className="absolute left-[-110px] hidden md:block opacity-0 hover:opacity-100 bg-blue-500 text-white p-2 rounded-full transition-all duration-300"
+            >
+              Ajouter un post
+            </span>
+          )}
+
+          {/* Icône du bouton */}
           {showForm ? <XCircle size={24} /> : <PlusCircle size={24} />}
         </button>
       </div>
@@ -159,20 +144,20 @@ function HomePage() {
           {/* Add Post Button */}
           <button
             onClick={handleAddPost}
-            className="mt-2 bg-green-500 text-white p-2 rounded w-full"
+            className="mt-2 bg-blue-500 text-white p-2 rounded w-full"
           >
             Publier le post
           </button>
         </div>
 
         {/* Posts Display */}
-        {posts.map((post) => (
+        { posts.map((post) => (
           <Post key={post.id} {...post} />
         ))}
       </div>
 
       {/* Suggestions Section */}
-      <div className="p-6 bg-gray-50 min-h-screen">
+      <div className="p-6 bg-white-50 min-h-screen">
         <FriendSuggestions suggestions={suggestions} />
       </div>
     </div>
