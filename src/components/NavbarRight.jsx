@@ -2,11 +2,12 @@
 import React, { useState, createContext } from 'react';
 import { LogIn, LogOut, ChevronFirst, ChevronLast, Users } from 'lucide-react'; // Import Users icon for Friend Section
 import { Link } from 'react-router-dom'; // Import Link for navigation
-
+import { useAuth } from '../context/AuthContext';
 const SidebarContext = createContext();
 
 export default function NavbarRight({ isLoggedIn }) {
   const [expanded, setExpanded] = useState(false); // Start collapsed
+  const { logout, currentUser } = useAuth();
 
   // Function to toggle collapse/expand when clicking the collapse button
   const toggleSidebar = () => setExpanded((prev) => !prev);
@@ -27,7 +28,7 @@ export default function NavbarRight({ isLoggedIn }) {
           {/* Border under the collapse button */}
           <div className="border-b border-gray-200" />
 
-          {isLoggedIn ? (
+          {currentUser ? (
             <>
               {/* Profile Section - Wrap the profile info with a Link */}
               <Link to="/profile"> {/* Link to Profile page */}
@@ -65,7 +66,7 @@ export default function NavbarRight({ isLoggedIn }) {
                 icon={<LogOut size={20} />}
                 text="Logout"
                 expanded={expanded}
-                onClick={() => console.log('Logging out...')} // Replace with actual logout functionality
+                onClick={logout} // Replace with actual logout functionality
                 hoverTextColor="text-red-600"
                 centerIcon={!expanded}
               />

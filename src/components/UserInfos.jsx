@@ -1,64 +1,44 @@
-// src/components/UserInfos.jsx
-import React from 'react';
+import React from "react";
+import { useAuth } from "../context/AuthContext"; // Importer le hook personnalisé pour accéder au contexte
+import { TailSpin } from "react-loader-spinner";
 import { motion } from "framer-motion";
-import profilePhoto from '../assets/photo.jpg'; // Placeholder image
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function UserInfos() {
-    const userData = {
-        firstName: "John",
-        lastName: "Doe",
-        email: "johndoe@example.com",
-        password: "••••••••",
-        filiere: "Informatique",
-        groupe: "Groupe A",
-        etablissement: "Université de Paris",
-        anneeFormation: "3ème année",
-    };
+const UserInfos = () => {
+  // Accéder aux données depuis le contexte
+  const { currentUser, userData } = useAuth();
 
+  // Si l'utilisateur n'est pas connecté ou si les données sont en cours de chargement
+  if (!currentUser) {
     return (
-        <div className="bg-white shadow-lg rounded-lg p-6 w-96">
-            {/* Profile Photo with Hover Animation */}
-            <motion.div
-                className="flex justify-center mb-4"
-                whileHover={{ scale: 1.1, rotate: 10 }}
-                transition={{ type: "spring", stiffness: 200 }}
-            >
-                <img
-                    src={profilePhoto}
-                    alt="Profile"
-                    className="w-32 h-32 rounded-full border-4 border-blue-500"
-                />
-            </motion.div>
-
-            {/* User Name with Hover Effect */}
-            <motion.div
-                className="text-center mb-4"
-                whileHover={{ scale: 1.1, color: "#0077ff" }}
-                transition={{ duration: 0.3 }}
-            >
-                <h2 className="text-xl font-semibold">
-                    {userData.firstName} {userData.lastName}
-                </h2>
-            </motion.div>
-
-            {/* Email with Hover Effect */}
-            <motion.div
-                className="text-center mb-4"
-                whileHover={{ scale: 1.1, color: "#0077ff" }}
-                transition={{ duration: 0.3 }}
-            >
-                <p className="text-sm">{userData.email}</p>
-            </motion.div>
-
-            {/* Additional User Data */}
-            <div className="space-y-2">
-                <p><strong>Filière:</strong> {userData.filiere}</p>
-                <p><strong>Groupe:</strong> {userData.groupe}</p>
-                <p><strong>Établissement:</strong> {userData.etablissement}</p>
-                <p><strong>Année de Formation:</strong> {userData.anneeFormation}</p>
-            </div>
-        </div>
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-red-600 font-semibold">Vous devez être connecté pour voir cette page.</p>
+      </div>
     );
-}
+  }
 
-export default UserInfos;  {/* Assurez-vous que l'exportation par défaut est ici. */}
+  // Affichage si les données sont en train de se charger
+  if (!userData) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <TailSpin height="50" width="50" color="#6B21A8" ariaLabel="loading" />
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      className="p-6 bg-white shadow-lg rounded-lg w-full max-w-md"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <h2 className="text-2xl font-semibold mb-4 text-purple-700">Bienvenue, {userData.name}</h2>
+      <p><strong>Email :</strong> {userData.email}</p>
+      <ToastContainer />
+    </motion.div>
+  );
+};
+
+export default UserInfos;

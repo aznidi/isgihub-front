@@ -3,8 +3,8 @@ import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults';
 
 function SearchPage() {
-  const [query, setQuery] = useState(''); // Texte de recherche
-  const [filter, setFilter] = useState('all'); // Filtre actif : 'all', 'stagiaire', 'formateur'
+  const [query, setQuery] = useState('');
+  const [filter, setFilter] = useState('all');
 
   return (
     <div className="flex flex-col items-center p-4 min-h-screen">

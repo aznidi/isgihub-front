@@ -2,10 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { LogOut, LogIn, Users } from 'lucide-react';
 import { Link } from 'react-router-dom'; // Importer Link pour la navigation
 import logos from '../assets/logos.png';
+import { useAuth } from '../context/AuthContext';
 
 function NavbarTop({ isLoggedIn }) {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const profileRef = useRef(null); // Référence pour le menu déroulant du profil
+  const { logout, currentUser } = useAuth();
 
   const toggleProfileDropdown = () => setShowProfileDropdown((prev) => !prev);
 
@@ -50,7 +52,7 @@ function NavbarTop({ isLoggedIn }) {
           }`}
           style={{ transformOrigin: 'top' }}
         >
-          {isLoggedIn ? (
+          {currentUser ? (
             <>
               {/* Profile Info - Wrap with Link to profile page */}
               <Link to="/profile" className="block p-3 border-b border-gray-200 hover:bg-gray-100 transition">
@@ -68,7 +70,7 @@ function NavbarTop({ isLoggedIn }) {
 
               {/* Logout Button */}
               <Link
-                to="/logout"
+                onClick={logout}
                 className="w-full p-2 text-left text-red-600 hover:bg-gray-100 transition flex items-center"
               >
                 <LogOut size={20} className="inline mr-2" /> Logout
