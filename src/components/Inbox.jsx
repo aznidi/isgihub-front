@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Smile, Send } from "lucide-react";
 import EmojiPicker from "emoji-picker-react";
 
@@ -55,7 +56,7 @@ export default function ChatApp() {
         chat.id === selectedMessage.id
           ? {
               ...chat,
-              messages: [...chat.messages, { sender: "You", message: newMessage, timestamp }],
+              messages: [...chat.messages, { sender: "You", message: newMessage, timestamp, seen: false }],
             }
           : chat
       )
@@ -65,7 +66,7 @@ export default function ChatApp() {
       prev
         ? {
             ...prev,
-            messages: [...prev.messages, { sender: "You", message: newMessage, timestamp }],
+            messages: [...prev.messages, { sender: "You", message: newMessage, timestamp, seen: false }],
           }
         : prev
     );
@@ -105,137 +106,151 @@ export default function ChatApp() {
   };
 
   return (
-    <div className="h-[90vh] flex bg-gradient-to-r from-[#1e1e1e] via-[#121212] to-[#2a2a2a] text-gray-200 max-w-[1000px] mx-auto rounded-xl overflow-hidden">
+    <div className="h-[90vh] flex bg-[#f5f5f5] text-[#000000] max-w-[1000px] mx-auto rounded-xl overflow-hidden shadow-lg">
       {/* Sidebar */}
-      <div
-        className={`transition-all duration-300 ${sidebarOpen ? "w-64" : "w-0"} flex-shrink-0 overflow-hidden bg-[#1c1c1c] rounded-l-xl`}
+      <motion.div
+        className="flex-shrink-0 overflow-hidden bg-[#ffffff] rounded-l-xl border-r border-gray-200"
+        animate={{ width: sidebarOpen ? "16rem" : "0" }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
       >
         {sidebarOpen && (
-          <div className="p-4">
-            <h2 className="text-sm font-bold mb-4 flex items-center justify-between">
+          <motion.div
+            className="p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <h2 className="text-sm font-bold mb-4 flex items-center justify-between text-[#333333]">
               Chats
             </h2>
-            <ul>
+            <motion.ul layout>
               {chats.map((chat) => (
-                <li
+                <motion.li
                   key={chat.id}
-                  className={`p-2 rounded-md mb-2 cursor-pointer ${selectedMessage?.id === chat.id ? "bg-[#7f00ff] text-white" : "hover:bg-[#444444]"}`}
+                  className={`p-2 rounded-md mb-2 cursor-pointer flex items-center space-x-3 ${selectedMessage?.id === chat.id ? "bg-[#e6f7ff] text-[#007BFF]" : "hover:bg-[#f0f0f0]"}`}
                   onClick={() => handleConversationClick(chat)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <div className="flex items-center justify-between">
-                    <img
-                      src={mockProfilePics[chat.sender]}
-                      alt={`${chat.sender} profile`}
-                      className="w-8 h-8 rounded-full mr-2"
-                    />
-                    <span>{chat.sender}</span>
-                    {chat.unreadCount > 0 && (
-                      <span className="bg-[#ff2e2e] text-white text-xs px-2 py-0.5 rounded-full">
-                        {chat.unreadCount}
-                      </span>
-                    )}
+                  <img
+                    src={mockProfilePics[chat.sender]}
+                    alt={`${chat.sender} profile`}
+                    className="w-8 h-8 rounded-full"
+                  />
+                  <div className="flex-1">
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium">{chat.sender}</span>
+                      {chat.unreadCount === 0 ? (
+                        <span className="text-[#007BFF] text-xs">✔️ Seen</span>
+                      ) : (
+                        <span className="text-[#FF4D4F] text-xs">• New</span>
+                      )}
+                    </div>
+                    <span className="text-sm text-gray-500">{chat.subject}</span>
                   </div>
-                </li>
+                </motion.li>
               ))}
-            </ul>
-          </div>
+            </motion.ul>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
 
       {/* Chat Window */}
       <div className="flex-1 flex flex-col rounded-r-xl overflow-hidden">
-        {/* Header */}
-        <div className="p-4 flex items-center justify-between bg-[#2b2b2b] rounded-t-xl">
-          <h2 className="font-bold">{selectedMessage ? selectedMessage.sender : "Select a chat"}</h2>
+        <motion.div
+          className="p-4 flex items-center justify-between bg-[#ffffff] rounded-t-xl border-b border-gray-200"
+          initial={{ y: -50 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <h2 className="font-bold text-[#333333]">{selectedMessage ? selectedMessage.sender : "Select a chat"}</h2>
           <button
             onClick={() => setSidebarOpen((prev) => !prev)}
-            className="p-2 rounded-full bg-[#333333] hover:bg-[#444444] flex items-center justify-center"
+            className="p-2 rounded-full bg-[#f0f0f0] hover:bg-[#e0e0e0] flex items-center justify-center"
             style={{ width: "40px", height: "40px" }}
           >
-            {sidebarOpen ? <ChevronLeft size={20} className="text-[#00ff96]" /> : <ChevronRight size={20} className="text-[#00ff96]" />}
+            {sidebarOpen ? <ChevronLeft size={20} className="text-[#007BFF]" /> : <ChevronRight size={20} className="text-[#007BFF]" />}
           </button>
-        </div>
+        </motion.div>
 
-        {/* Messages */}
-        <div className="flex-1 p-4 bg-[#1e1e1e] overflow-y-scroll">
-          {selectedMessage ? (
-            selectedMessage.messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`mb-3 flex ${msg.sender === "You" ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`relative max-w-[70%] p-3 rounded-lg ${msg.sender === "You" ? "bg-[#007BFF] text-white" : "bg-[#eeeeee] text-black"}`}
-                  style={{
-                    borderRadius: "20px", // Rounded bubbles
-                    padding: "12px", // Clean padding
-                  }}
+        <motion.div className="flex-1 p-4 bg-[#fafafa] overflow-y-scroll">
+          <AnimatePresence>
+            {selectedMessage ? (
+              selectedMessage.messages.map((msg, index) => (
+                <motion.div
+                  key={index}
+                  className={`mb-3 flex ${msg.sender === "You" ? "justify-end" : "justify-start"}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <p className="text-sm">{msg.message}</p>
-                  <p className="text-xs text-black text-right mt-1">{msg.timestamp}</p> {/* Updated to black */}
-                  {/* Tail for the message bubble (side) */}
-                  {msg.sender === "You" ? (
-                    <div
-                      className="absolute right-[-8px] bottom-0"
-                      style={{
-                        width: "0",
-                        height: "0",
-                        borderTop: "8px solid transparent",
-                        borderBottom: "8px solid transparent",
-                        borderLeft: "8px solid #007BFF", // Tail color for sent message
-                        borderRadius: "10px", // Rounded corner for the tail
-                      }}
-                    />
-                  ) : (
-                    <div
-                      className="absolute left-[-8px] bottom-0"
-                      style={{
-                        width: "0",
-                        height: "0",
-                        borderTop: "8px solid transparent",
-                        borderBottom: "8px solid transparent",
-                        borderRight: "8px solid #eeeeee", // Tail color for received message
-                        borderRadius: "10px", // Rounded corner for the tail
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500">Select a message to start a conversation</p>
-          )}
-        </div>
+                  <div
+                    className={`relative max-w-[70%] p-3 rounded-lg ${msg.sender === "You" ? "bg-[#007BFF] text-white" : "bg-[#f0f0f0] text-[#333333]"}`}
+                  >
+                    <p className="text-sm">{msg.message}</p>
+                    <div className="flex justify-between items-center mt-1">
+                      <p className={`text-xs ${msg.sender === "You" ? "text-[#E0E0E0]" : "text-[#666666]"}`}>
+                        {msg.timestamp}
+                      </p>
+                    </div>
 
-        {/* Input */}
-        <div className="p-4 flex items-center bg-[#333333]" ref={inputRef}>
+                    {/* "Seen" status */}
+                    {msg.sender === "You" && index === selectedMessage.messages.length - 1 && (
+                      <p className="text-xs text-[#FFFFFF] mt-1 text-right">
+                        ✔️ Seen
+                      </p>
+                    )}
+
+                    {msg.sender !== "You" && index === selectedMessage.messages.length - 1 && (
+                      <p className="text-xs text-[#007BFF] mt-1 text-left">
+                        ✔️ Seen by You
+                      </p>
+                    )}
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <motion.p
+                className="text-[#999999]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                Select a message to start a conversation
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+        <motion.div
+          className="p-4 flex items-center bg-[#ffffff] border-t border-gray-200"
+          ref={inputRef}
+          initial={{ y: 50 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
           <button
             onClick={() => setShowEmojiPicker((prev) => !prev)}
-            className="mr-2 p-2 rounded-full bg-[#444444] text-gray-300"
+            className="mr-2 p-2 rounded-full bg-[#f0f0f0] hover:bg-[#e0e0e0] text-[#333333]"
           >
             <Smile size={20} />
           </button>
 
           {showEmojiPicker && (
-            <div
-              className="absolute bottom-20 left-4 z-20"
-              style={{
-                width: "300px",
-                height: "350px",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
-                borderRadius: "12px",
-                backgroundColor: "#333333",
-                padding: "10px",
-              }}
+            <motion.div
+              className="absolute bottom-20 left-4 z-20 bg-[#ffffff] shadow-lg rounded-lg p-2"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
             >
               <EmojiPicker onEmojiClick={(emoji) => setNewMessage((prev) => prev + emoji.emoji)} />
-            </div>
+            </motion.div>
           )}
 
           <input
             type="text"
             placeholder="Type a message..."
-            className="flex-1 p-2 bg-transparent border rounded-lg outline-none text-sm"
+            className="flex-1 p-2 bg-[#fafafa] border rounded-lg outline-none text-sm"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -246,7 +261,7 @@ export default function ChatApp() {
           >
             <Send size={20} />
           </button>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

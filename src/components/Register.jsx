@@ -1,19 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import photo from "../assets/photo.jpg";
-import { Link, useNavigate } from "react-router-dom"; // Importer useNavigate
+import { Link, useNavigate } from "react-router-dom"; // Import de useNavigate
 import { ToastContainer, toast } from "react-toastify";
-import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase-config"; // Assurez-vous que Firebase est configuré
-import { TailSpin } from "react-loader-spinner";
+import { auth, database } from "../../firebase-config"; // Import Firebase config
+import { ref, set } from "firebase/database"; // Import Firebase Realtime Database
+import { TailSpin } from "react-loader-spinner"; // Loader pour feedback visuel
 
 const RegisterForm = () => {
-  const navigate = useNavigate(); // Initialiser useNavigate
+  const navigate = useNavigate(); // Initialisation de useNavigate
   const [isLoading, setIsLoading] = useState(false); // État pour gérer le spinner
 
+  // Formik pour la gestion du formulaire
   const formik = useFormik({
     initialValues: {
       firstname: "",
@@ -24,77 +25,71 @@ const RegisterForm = () => {
     },
     validationSchema: Yup.object({
       firstname: Yup.string()
-        .max(15, "Maximum 15 caractères")
-        .required("Prénom requis"),
+        .max(15, "Le prénom ne peut pas dépasser 15 caractères")
+        .required("Le prénom est requis"),
       surname: Yup.string()
-        .max(20, "Maximum 20 caractères")
-        .required("Nom requis"),
+        .max(20, "Le nom ne peut pas dépasser 20 caractères")
+        .required("Le nom est requis"),
       email: Yup.string()
         .email("Adresse e-mail invalide")
-        .required("E-mail requis"),
+        .required("L'e-mail est requis"),
       password: Yup.string()
-        .min(6, "Minimum 6 caractères")
-        .required("Mot de passe requis"),
+        .min(6, "Le mot de passe doit contenir au moins 6 caractères")
+        .required("Le mot de passe est requis"),
       confirmPassword: Yup.string()
-        .oneOf([Yup.ref("password"), null], "Les mots de passe doivent correspondre")
-        .required("Confirmation du mot de passe requise"),
+        .oneOf([Yup.ref("password"), null], "Les mots de passe ne correspondent pas")
+        .required("La confirmation du mot de passe est requise"),
     }),
     onSubmit: async (values) => {
+      setIsLoading(true);
       try {
-        // Inscription via Firebase
+        // Crée un utilisateur avec email et mot de passe
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           values.email,
           values.password
         );
 
-        // Affiche une notification de succès
-        toast.success("Inscription réussie !", {
-          position: "top-right",
-          autoClose: 2000, // Ferme automatiquement après 2 secondes
-          hideProgressBar: false,
-          closeOnClick: true,
+        const user = userCredential.user;
+
+        // Sauvegarde des données utilisateur dans Realtime Database
+        const userRef = ref(database, `users/${user.uid}`);
+        await set(userRef, {
+          firstname: values.firstname,
+          surname: values.surname,
+          email: values.email,
+          createdAt: new Date().toISOString(),
         });
 
-        setIsLoading(false); // Désactiver le spinner
+        // Notifier le succès
+        toast.success("Inscription réussie !", {
+          position: "top-right",
+          autoClose: 2000,
+        });
 
-          // Redirection vers /login après un délai
-          setTimeout(() => {
-            navigate("/login"); // Redirige vers la page de connexion
-          }, 2000); // Délai pour permettre d'afficher la Toast
-        } catch (error) {
-        setIsLoading(false); // Désactiver le spinner en cas d'erreur
-        // Gérer les erreurs Firebase
+        setIsLoading(false);
+
+        // Redirection vers la page de connexion
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
+      } catch (error) {
+        setIsLoading(false);
+
+        // Gestion des erreurs
         if (error.code === "auth/email-already-in-use") {
           toast.error("L'adresse e-mail est déjà utilisée.", {
             position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
           });
         } else if (error.code === "auth/weak-password") {
           toast.error("Le mot de passe est trop faible.", {
             position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-          });
-        } else if (error.code === "auth/invalid-email") {
-          toast.error("L'adresse e-mail est invalide.", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
           });
         } else {
           toast.error("Une erreur est survenue.", {
             position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
           });
         }
-
         console.error("Erreur Firebase :", error.message);
       }
     },
@@ -116,7 +111,7 @@ const RegisterForm = () => {
           Inscrivez-vous
         </h2>
         <p className="text-sm lg:text-base text-gray-600 mb-6">
-          Créez votre compte. C'est gratuit et ne prend qu'une minute.
+          Créez votre compte et commencez dès maintenant.
         </p>
         <form onSubmit={formik.handleSubmit}>
           {/* Prénom et Nom */}
@@ -125,7 +120,7 @@ const RegisterForm = () => {
               <input
                 type="text"
                 name="firstname"
-                placeholder="Entrez votre prénom"
+                placeholder="Votre prénom"
                 className={`border ${
                   formik.touched.firstname && formik.errors.firstname
                     ? "border-red-500"
@@ -136,16 +131,14 @@ const RegisterForm = () => {
                 value={formik.values.firstname}
               />
               {formik.touched.firstname && formik.errors.firstname && (
-                <p className="text-red-500 text-xs mt-1">
-                  {formik.errors.firstname}
-                </p>
+                <p className="text-red-500 text-xs mt-1">{formik.errors.firstname}</p>
               )}
             </div>
             <div>
               <input
                 type="text"
                 name="surname"
-                placeholder="Entrez votre nom"
+                placeholder="Votre nom"
                 className={`border ${
                   formik.touched.surname && formik.errors.surname
                     ? "border-red-500"
@@ -156,9 +149,7 @@ const RegisterForm = () => {
                 value={formik.values.surname}
               />
               {formik.touched.surname && formik.errors.surname && (
-                <p className="text-red-500 text-xs mt-1">
-                  {formik.errors.surname}
-                </p>
+                <p className="text-red-500 text-xs mt-1">{formik.errors.surname}</p>
               )}
             </div>
           </div>
@@ -168,7 +159,7 @@ const RegisterForm = () => {
             <input
               type="email"
               name="email"
-              placeholder="Entrez votre email"
+              placeholder="Votre e-mail"
               className={`border ${
                 formik.touched.email && formik.errors.email
                   ? "border-red-500"
@@ -183,12 +174,12 @@ const RegisterForm = () => {
             )}
           </div>
 
-          {/* Password */}
+          {/* Mot de passe */}
           <div className="mb-4">
             <input
               type="password"
               name="password"
-              placeholder="Entrez un mot de passe"
+              placeholder="Mot de passe"
               className={`border ${
                 formik.touched.password && formik.errors.password
                   ? "border-red-500"
@@ -199,18 +190,16 @@ const RegisterForm = () => {
               value={formik.values.password}
             />
             {formik.touched.password && formik.errors.password && (
-              <p className="text-red-500 text-xs mt-1">
-                {formik.errors.password}
-              </p>
+              <p className="text-red-500 text-xs mt-1">{formik.errors.password}</p>
             )}
           </div>
 
-          {/* Confirm Password */}
-          <div className="mb-4">
+          {/* Confirmation mot de passe */}
+          <div className="mb-6">
             <input
               type="password"
               name="confirmPassword"
-              placeholder="Confirmer le mot de passe"
+              placeholder="Confirmez votre mot de passe"
               className={`border ${
                 formik.touched.confirmPassword && formik.errors.confirmPassword
                   ? "border-red-500"
@@ -220,42 +209,32 @@ const RegisterForm = () => {
               onBlur={formik.handleBlur}
               value={formik.values.confirmPassword}
             />
-            {formik.touched.confirmPassword &&
-              formik.errors.confirmPassword && (
-                <p className="text-red-500 text-xs mt-1">
-                  {formik.errors.confirmPassword}
-                </p>
-              )}
+            {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+              <p className="text-red-500 text-xs mt-1">{formik.errors.confirmPassword}</p>
+            )}
           </div>
 
-          {/* Submit Button */}
-        <button
-          type="submit"
-          className={`w-full bg-purple-600 text-white rounded-md px-4 py-2 hover:bg-purple-700 transition flex items-center justify-center ${
-            isLoading ? "opacity-70 cursor-not-allowed" : ""
-          }`}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <TailSpin
-              height="24"
-              width="24"
-              color="#FFFFFF"
-              ariaLabel="loading"
-            />
-          ) : (
-            "Inscrivez-vous"
-          )}
-        </button>
+          {/* Bouton de soumission */}
+          <button
+            type="submit"
+            className="bg-purple-600 text-white w-full py-2 rounded-lg hover:bg-purple-500 transition duration-300 flex items-center justify-center"
+            disabled={isLoading}
+          >
+            {isLoading ? <TailSpin height="20" width="20" color="#ffffff" /> : "S'inscrire"}
+          </button>
+
         </form>
-        <div className="px-2 py-2 text-sm text-purple-600 hover:text-purple-800">
-          <Link to={"/login"}>
-            Vous avez déjà un compte ? Connectez-vous
+
+        {/* Lien vers connexion */}
+        <p className="text-sm text-center text-gray-500 mt-4">
+          Vous avez déjà un compte ?{" "}
+          <Link to="/login" className="text-purple-600 hover:text-purple-500">
+            Connexion
           </Link>
-        </div>
+        </p>
       </div>
 
-      {/* Toast Notifications */}
+      {/* ToastContainer */}
       <ToastContainer />
     </div>
   );

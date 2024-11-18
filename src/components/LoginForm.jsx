@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import photo from "../assets/photo.jpg";
-import { Link, useNavigate } from "react-router-dom"; // Importer useNavigate
-import { signInWithEmailAndPassword } from "firebase/auth"; // Importer Firebase Auth
-import { auth } from "../../firebase-config"; // Assurez-vous que Firebase est configuré
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase-config"; // Assurez-vous que Firebase est correctement configuré
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { TailSpin } from "react-loader-spinner";
 
 const LoginForm = () => {
-  const navigate = useNavigate(); // Initialiser useNavigate
+  const navigate = useNavigate(); // Pour gérer la navigation
+  const [isLoading, setIsLoading] = useState(false); // Gestion du spinner de chargement
 
+  // Utilisation de Formik pour la gestion du formulaire
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -19,60 +22,70 @@ const LoginForm = () => {
     validationSchema: Yup.object({
       email: Yup.string()
         .email("Adresse e-mail invalide")
-        .required("E-mail requis"),
+        .required("L'e-mail est requis"),
       password: Yup.string()
-        .min(6, "Minimum 6 caractères")
-        .required("Mot de passe requis"),
+        .min(6, "Le mot de passe doit contenir au moins 6 caractères")
+        .required("Le mot de passe est requis"),
     }),
     onSubmit: async (values) => {
+      setIsLoading(true); // Activation du spinner
+
       try {
-        // Connexion via Firebase
+        // Authentification avec Firebase
         const userCredential = await signInWithEmailAndPassword(
           auth,
           values.email,
           values.password
         );
 
-        console.log("Utilisateur connecté :", userCredential.user);
-
-        // Affiche une notification de succès
+        // Notification de succès
         toast.success("Connexion réussie !", {
           position: "top-right",
-          autoClose: 2000, // Ferme automatiquement après 2 secondes
-          hideProgressBar: false,
-          closeOnClick: true,
+          autoClose: 2000,
         });
 
-        // Redirection vers la page d'accueil
+        // Désactivation du spinner et redirection
         setTimeout(() => {
-          navigate("/"); // Redirige vers la page racine "/"
-        }, 1500); // Délai pour afficher la Toast
+          navigate("/"); // Redirige vers la page d'accueil
+        }, 1000);
       } catch (error) {
-        // Gérer les erreurs Firebase
-        if (error.code === "auth/user-not-found") {
-          toast.error("Aucun utilisateur trouvé avec cet e-mail.", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-          });
-        } else if (error.code === "auth/wrong-password") {
-          toast.error("Mot de passe incorrect.", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-          });
-        } else {
-          toast.error("Une erreur est survenue.", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-          });
-        }
+        setIsLoading(false); // Désactivation du spinner en cas d'erreur
 
-        console.error("Erreur Firebase :", error.message);
+        // Gestion des erreurs d'authentification
+        switch (error.code) {
+          case "auth/user-not-found":
+            toast.error("Aucun utilisateur trouvé avec cet e-mail.", {
+              position: "top-right",
+              autoClose: 3000,
+            });
+            break;
+          case "auth/wrong-password":
+            toast.error("Mot de passe incorrect.", {
+              position: "top-right",
+              autoClose: 3000,
+            });
+            break;
+          case "auth/user-disabled":
+            toast.error("Ce compte a été désactivé.", {
+              position: "top-right",
+              autoClose: 3000,
+            });
+            break;
+          case "auth/too-many-requests":
+            toast.error(
+              "Trop de tentatives de connexion. Veuillez réessayer plus tard.",
+              {
+                position: "top-right",
+                autoClose: 3000,
+              }
+            );
+            break;
+          default:
+            toast.error("Une erreur est survenue. Veuillez réessayer.", {
+              position: "top-right",
+              autoClose: 3000,
+            });
+        }
       }
     },
   });
@@ -96,20 +109,11 @@ const LoginForm = () => {
           Heureux de vous revoir !
         </p>
         <form onSubmit={formik.handleSubmit} className="space-y-4">
-          {/* Global Error */}
-          {formik.errors.email && formik.errors.password && (
-            <p className="text-red-500 text-sm">
-              Veuillez remplir tous les champs.
-            </p>
-          )}
-
-          {/* Email */}
+          {/* Champ Email */}
           <div>
             <input
               type="email"
               name="email"
-              aria-label="Adresse e-mail"
-              aria-required="true"
               placeholder="Adresse e-mail"
               className={`border ${
                 formik.touched.email && formik.errors.email
@@ -125,13 +129,11 @@ const LoginForm = () => {
             )}
           </div>
 
-          {/* Password */}
+          {/* Champ Mot de passe */}
           <div>
             <input
               type="password"
               name="password"
-              aria-label="Mot de passe"
-              aria-required="true"
               placeholder="Mot de passe"
               className={`border ${
                 formik.touched.password && formik.errors.password
@@ -143,46 +145,34 @@ const LoginForm = () => {
               value={formik.values.password}
             />
             {formik.touched.password && formik.errors.password && (
-              <p className="text-red-500 text-xs mt-1">{formik.errors.password}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {formik.errors.password}
+              </p>
             )}
           </div>
 
-          {/* Remember Me & Forgot Password */}
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-2 sm:space-y-0">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                name="rememberMe"
-                id="rememberMe"
-                className="mr-2"
-              />
-              <label htmlFor="rememberMe" className="text-sm text-gray-600">
-                Se souvenir de moi
-              </label>
-            </div>
-            <Link
-              to="forgot-password"
-              className="text-sm text-purple-600 hover:text-purple-800"
-            >
-              Mot de passe oublié ?
-            </Link>
-          </div>
-
-          {/* Submit Button */}
+          {/* Bouton Soumettre */}
           <button
             type="submit"
-            className="w-full bg-purple-600 text-white rounded-md px-4 py-2 hover:bg-purple-700 transition"
+            className="w-full bg-purple-600 text-white rounded-md px-4 py-2 hover:bg-purple-700 transition flex justify-center items-center"
+            disabled={isLoading}
           >
-            Se connecter
+            {isLoading ? (
+              <TailSpin height="24" width="24" color="#FFFFFF" ariaLabel="loading" />
+            ) : (
+              "Se connecter"
+            )}
           </button>
+
         </form>
 
+        {/* Lien vers Inscription */}
         <div className="mt-4 text-center text-sm text-purple-600 hover:text-purple-800">
           <Link to="/register">Vous n'avez pas de compte ? Inscrivez-vous</Link>
         </div>
       </div>
 
-      {/* Toast Notifications */}
+      {/* ToastContainer */}
       <ToastContainer />
     </div>
   );
