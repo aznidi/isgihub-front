@@ -171,10 +171,6 @@ function HomePage() {
         ))}
       </div>
 
-      {/* Suggestions Section */}
-      <div className="p-6 bg-gray-50 min-h-screen">
-        <FriendSuggestions suggestions={suggestions} />
-      </div>
     </div>
   );
 }

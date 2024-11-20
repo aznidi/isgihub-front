@@ -46,6 +46,14 @@ const Notification = ({ userPhoto, username, notificationType, postPhoto }) => {
           className="w-14 h-14 rounded-md object-cover border border-gray-300 ml-4"
         />
       )}
+      {!postPhoto && (
+        <button
+          className="w-30 bg-purple-600 text-white rounded-md px-4 py-2 hover:bg-purple-700 transition flex justify-center items-center"
+          
+        >
+          Accepter
+        </button>
+      )}
     </div>
   );
 };

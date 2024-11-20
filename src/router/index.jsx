@@ -11,6 +11,7 @@ import NotifcationsPage from "../pages/NotifcationsPage";
 import FilesPage from "../pages/FilesPage";
 import SettingsPage from "../pages/SettingsPage";
 import PrivateRoute from "../router/PrivateRoute"; // Import du PrivateRoute
+import FriendsPage from "../pages/FriendsPage";
 
 export const router = createBrowserRouter(
   [
@@ -48,6 +49,10 @@ export const router = createBrowserRouter(
               path: "/notifications",
               element: <NotifcationsPage />,
             },
+            {
+              path: "/friends",
+              element: <FriendsPage />
+            }
           ],
         },
         {

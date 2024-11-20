@@ -2,7 +2,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     darkMode: ["class"],
-    content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
+    content: [
+		"./src/**/*.{js,jsx,ts,tsx}",
+		"./src/components/ui/**/*.{js,ts,jsx,tsx}", // Chemin des composants ShadCN
+	],
 	theme: {
     	extend: {
 			
